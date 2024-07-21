@@ -1,0 +1,34 @@
+package br.com.ludevsp.domain.entities;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import java.sql.Timestamp;
+
+@Data
+@NoArgsConstructor
+@Entity
+@Table(name = "merchant")
+public class Merchant {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "merchant_code")
+    private long merchantCode;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "create_time")
+    private Timestamp createTime;
+
+    @Column(name = "mmc", insertable = false, updatable = false)
+    private int mmc;
+
+    @ManyToOne
+    @JoinColumn(name = "mmc", nullable = false)
+    private Category Category;
+
+    public Merchant(String name) {
+        this.name = name;
+    }
+}
