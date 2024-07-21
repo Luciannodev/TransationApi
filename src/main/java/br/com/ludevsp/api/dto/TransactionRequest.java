@@ -1,6 +1,6 @@
 package br.com.ludevsp.api.dto;
 
-import br.com.ludevsp.domain.entities.Transation;
+import br.com.ludevsp.domain.entities.Transaction;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TransationRequest {
+public class TransactionRequest {
     @JsonProperty("account")
     private String accountCode;
     @JsonProperty("totalAmount")
@@ -19,7 +19,7 @@ public class TransationRequest {
     @JsonProperty("merchant")
     private String MerchantName;
 
-    public Transation ToEntity() {
-        return new Transation(accountCode, totalAmount, mmc, MerchantName);
+    public Transaction ToEntity() {
+        return new Transaction(accountCode, totalAmount, mmc, MerchantName);
     }
 }

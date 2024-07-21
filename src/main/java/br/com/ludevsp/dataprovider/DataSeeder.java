@@ -44,7 +44,7 @@ public class DataSeeder {
         }
     }
 
-    public void seedMerchantData() {
+    public void seedMerchantDataMock() {
         if (merchantRepository.findByName("PADARIA DO ZE               SAO PAULO BR") == null) {
             Merchant merchant = new Merchant();
             merchant.setName("PADARIA DO ZE               SAO PAULO BR");

@@ -10,12 +10,12 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "transation")
-public class Transation {
+@Table(name = "transaction")
+public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "transation_code")
-    private long transationCode;
+    @Column(name = "transaction_code")
+    private long transactionCode;
 
     @Column(name = "total_amount")
     private BigDecimal totalAmount;
@@ -47,10 +47,12 @@ public class Transation {
     @JoinColumn(name = "mmc", nullable = false)
     private Category Category;
 
-    public Transation(String accountCode, BigDecimal totalAmount, String mmc, String merchantName) {
+    public Transaction(String accountCode, BigDecimal totalAmount, String mmc, String merchantName) {
         this.accountCode = Long.parseLong(accountCode);
         this.totalAmount = totalAmount;
         this.mmc = (mmc != null && !mmc.isEmpty()) ? Integer.parseInt(mmc) : 0;
         this.merchant = new Merchant(merchantName);
     }
+
+
 }
