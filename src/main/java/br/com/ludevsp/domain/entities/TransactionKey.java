@@ -5,6 +5,6 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class TransationKey implements Serializable {
-    private long transationCode;
+public class TransactionKey implements Serializable {
+    private long transactionCode;
 }

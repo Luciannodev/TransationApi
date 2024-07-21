@@ -1,10 +1,3 @@
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-
--- -----------------------------------------------------
--- Schema NegotiationDB
--- -----------------------------------------------------
 
 -- -----------------------------------------------------
 -- Schema NegotiationDB
@@ -72,31 +65,31 @@ CREATE TABLE IF NOT EXISTS `NegotiationDB`.`account_category_balance` (
 
 
 -- -----------------------------------------------------
--- Table `NegotiationDB`.`transation`
+-- Table `NegotiationDB`.`transaction`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `NegotiationDB`.`transation` (
-  `transation_code` BIGINT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `NegotiationDB`.`transaction` (
+  `transaction_code` BIGINT NOT NULL AUTO_INCREMENT,
   `total_amount` DECIMAL NULL,
   `response_code` VARCHAR(25) NOT NULL,
   `create_time` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
-  `merchant_code` BIGINT NOT NULL,
-  `account_code` BIGINT NOT NULL,
-  `mmc` INT NOT NULL,
-  PRIMARY KEY (`transation_code`),
-  INDEX `fk_transation_merchant1_idx` (`merchant_code` ASC) VISIBLE,
-  INDEX `fk_transation_account1_idx` (`account_code` ASC) VISIBLE,
-  INDEX `fk_transation_category1_idx` (`mmc` ASC) VISIBLE,
-  CONSTRAINT `fk_transation_merchant1`
+  `merchant_code` BIGINT NULL,
+  `account_code` BIGINT NULL,
+  `mmc` INT NULL,
+  PRIMARY KEY (`transaction_code`),
+  INDEX `fk_transaction_merchant1_idx` (`merchant_code` ASC) VISIBLE,
+  INDEX `fk_transaction_account1_idx` (`account_code` ASC) VISIBLE,
+  INDEX `fk_transaction_category1_idx` (`mmc` ASC) VISIBLE,
+  CONSTRAINT `fk_transaction_merchant1`
     FOREIGN KEY (`merchant_code`)
     REFERENCES `NegotiationDB`.`merchant` (`merchant_code`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_transation_account1`
+  CONSTRAINT `fk_transaction_account1`
     FOREIGN KEY (`account_code`)
     REFERENCES `NegotiationDB`.`account` (`account_code`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_transation_category1`
+  CONSTRAINT `fk_transaction_category1`
     FOREIGN KEY (`mmc`)
     REFERENCES `NegotiationDB`.`category` (`category_code`)
     ON DELETE NO ACTION

@@ -20,7 +20,7 @@ public class Main {
         return args -> {
             dataSeeder.seedDataCategory();
             dataSeeder.seedMockAccount();
-            dataSeeder.seedMerchantData();
+            dataSeeder.seedMerchantDataMock();
         };
     }
 }

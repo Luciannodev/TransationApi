@@ -31,4 +31,9 @@ public class Merchant {
     public Merchant(String name) {
         this.name = name;
     }
+
+    public Merchant(String name, int mmc) {
+        this.name = name;
+        this.mmc = mmc;
+    }
 }

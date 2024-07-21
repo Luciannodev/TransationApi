@@ -32,4 +32,12 @@ public class AccountCategoryBalance {
     @ManyToOne
     @JoinColumn(name = "category_code", nullable = false)
     private Category categoryBalance;
+
+    public AccountCategoryBalance(long accountCode, int categoryCode, BigDecimal balance, Account account, Category categoryBalance) {
+        this.accountCode = accountCode;
+        this.categoryCode = categoryCode;
+        this.balance = balance;
+        this.account = account;
+        this.categoryBalance = categoryBalance;
+    }
 }
