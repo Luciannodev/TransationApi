@@ -30,7 +30,7 @@ public class Transaction {
     private long merchantCode;
 
     @ManyToOne
-    @JoinColumn(name = "merchant_code", nullable = false)
+    @JoinColumn(name = "merchant_code")
     private Merchant merchant;
 
     @Column(name = "account_code", insertable = false, updatable = false)

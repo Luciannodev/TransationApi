@@ -66,9 +66,9 @@ public class DataSeeder {
 
 
         }
-        if (merchantRepository.findByName("MERCADO DA MARIA               SAO PAULO BR") == null) {
+        if (merchantRepository.findByName("MERCADO DA MARIA              SAO PAULO BR") == null) {
             Merchant merchantMaria = new Merchant();
-            merchantMaria.setName("MERCADO DA MARIA               SAO PAULO BR");
+            merchantMaria.setName("MERCADO DA MARIA              SAO PAULO BR");
 
 
             merchantRepository.save(merchantMaria);

@@ -1,5 +1,8 @@
 package br.com.ludevsp.application.usecase;
 
+import br.com.ludevsp.api.dto.TransactionQuery;
+import br.com.ludevsp.api.dto.TransactionResponse;
+import br.com.ludevsp.application.helpers.TransactionSpecification;
 import br.com.ludevsp.domain.enums.ResponseCode;
 import br.com.ludevsp.domain.entities.AccountCategoryBalance;
 import br.com.ludevsp.domain.entities.Category;
@@ -9,6 +12,8 @@ import br.com.ludevsp.domain.intefaces.repository.CategoryRepository;
 import br.com.ludevsp.domain.intefaces.repository.MerchantRepository;
 import br.com.ludevsp.domain.intefaces.repository.TransactionRepository;
 import br.com.ludevsp.domain.intefaces.usecase.TransactionUseCase;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +33,13 @@ public class TransactionUseCaseImpl implements TransactionUseCase {
         this.accountCategoryBalanceRepository = accountCategoryBalanceRepository;
         this.merchantRepository = merchantRepository;
         this.categoryRepository = categoryRepository;
+    }
+
+    @Override
+    public List<Transaction> getAllTransactions(TransactionQuery transactionQuery) {
+        Specification<Transaction> spec = new TransactionSpecification(transactionQuery);
+        List<Transaction> transactions = transactionRepository.findAll(spec);
+        return transactions;
     }
 
     @Override
@@ -64,12 +76,13 @@ public class TransactionUseCaseImpl implements TransactionUseCase {
     }
 
     private void attachMerchantDetails(Transaction transaction) {
+
         var merchant = merchantRepository.findByName(transaction.getMerchant().getName());
-        if (merchant.getMmc() == null) {
+        if (merchant == null) {
             transaction.setMerchant(merchant);
-            throw new RuntimeException("Merchant Mmmc not found");
+            throw  new RuntimeException("Merchant not found");
         }
-        if (merchant.getMmc() != 0) {
+        else if (merchant.getMmc() != null) {
             transaction.setMmc(merchant.getMmc());
         }
         transaction.setMerchant(merchant);
