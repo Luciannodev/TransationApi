@@ -1,7 +1,10 @@
+import org.gradle.internal.impldep.bsh.commands.dir
+
 plugins {
     id("java")
     id("org.springframework.boot") version "3.3.1"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    id("jacoco")
 }
 
 group = "br.com.ludevsp"
@@ -26,6 +29,19 @@ dependencies {
 
 }
 
+tasks.withType<JacocoReport> {
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.map {
+            fileTree(it) {
+                exclude("br/com/ludevsp/dataprovider/DataSeeder.class")
+                exclude("br/com/ludevsp/Main.class")
+                exclude("br/com/ludevsp/domain/dto")
+            }
+        }))
+    }
+}
+
 tasks.test {
     useJUnitPlatform()
+    finalizedBy("jacocoTestReport")
 }
