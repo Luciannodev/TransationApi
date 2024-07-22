@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
+
 @Component
 public class DataSeeder {
     private final AccountRepository accountRepository;
@@ -75,7 +76,7 @@ public class DataSeeder {
 
         // Para cada categoria, cria um AccountCategoryBalance
         for (CategoryEnum categoryEnum : CategoryEnum.values()) {
-            Category category = categoryRepository.findById(Long.valueOf(categoryEnum.getMccCodes().getFirst())).orElse(null);
+            Category category = categoryRepository.findById(Long.valueOf(categoryEnum.getMccCodes().get(0))).orElse(null);
             if (category != null) {
                 AccountCategoryBalance accountCategoryBalance = new AccountCategoryBalance();
                 accountCategoryBalance.setAccount(account);
