@@ -1,7 +1,7 @@
 package br.com.ludevsp.api.controller;
 
 import br.com.ludevsp.api.controllers.TransactionController;
-import br.com.ludevsp.domain.dto.ResponseCode;
+import br.com.ludevsp.domain.enums.ResponseCode;
 import br.com.ludevsp.domain.entities.Transaction;
 import br.com.ludevsp.domain.intefaces.usecase.TransactionUseCase;
 import org.junit.jupiter.api.BeforeEach;

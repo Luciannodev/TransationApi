@@ -22,10 +22,10 @@ public class Merchant {
     private Timestamp createTime;
 
     @Column(name = "mmc", insertable = false, updatable = false)
-    private int mmc;
+    private Integer mmc;
 
     @ManyToOne
-    @JoinColumn(name = "mmc", nullable = false)
+    @JoinColumn(name = "mmc")
     private Category Category;
 
     public Merchant(String name) {

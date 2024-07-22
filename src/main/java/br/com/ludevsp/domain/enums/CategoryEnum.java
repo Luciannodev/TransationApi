@@ -25,6 +25,6 @@ public enum CategoryEnum {
                 return category;
             }
         }
-        return CASH; // default category
+        throw new IllegalArgumentException("MCC not found");
     }
 }

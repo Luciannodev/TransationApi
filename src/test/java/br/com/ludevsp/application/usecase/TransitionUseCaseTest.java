@@ -1,6 +1,6 @@
 package br.com.ludevsp.application.usecase;
 
-import br.com.ludevsp.domain.dto.ResponseCode;
+import br.com.ludevsp.domain.enums.ResponseCode;
 import br.com.ludevsp.domain.entities.AccountCategoryBalance;
 import br.com.ludevsp.domain.entities.Category;
 import br.com.ludevsp.domain.entities.Merchant;
@@ -16,7 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
@@ -46,17 +46,38 @@ public class TransitionUseCaseTest {
     }
 
     private void setupMocks() {
-        when(transitionRepository.save(any())).thenReturn(testHelper.createTransaction());
         when(merchantRepository.findByName(anyString())).thenReturn(new Merchant("Teste", 5411));
-        when(accountCategoryBalanceRepository.findByAccountCodeAndCategoryCode(anyLong(), anyInt())).thenReturn(new AccountCategoryBalance());
         when(categoryRepository.findByCategoryCode(anyInt())).thenReturn(new Category(5411, "food"));
         when(categoryRepository.findByName(anyString())).thenReturn(testHelper.createCategories());
-        when(accountCategoryBalanceRepository.findByAccountCodeAndCategoryCodeIn(anyLong(), anyList())).thenReturn(testHelper.createAccountCategoryBalances());
     }
 
     @Test
     public void testExecute() {
+        when(accountCategoryBalanceRepository.findByAccountCodeAndCategoryCodeIn(anyLong(), anyList())).thenReturn(testHelper.createAccountCategoryBalances());
+        when(accountCategoryBalanceRepository.findByAccountCodeAndCategoryCode(anyLong(), anyInt())).thenReturn(new AccountCategoryBalance());
+        when(transitionRepository.save(any())).thenReturn(testHelper.createTransaction());
         Transaction result = transitionUseCase.execute(testHelper.createTransaction());
         assertEquals(ResponseCode.APROVADA, result.getResponseCode());
     }
+
+    @Test
+    public void testExecuteWithoutBalance() {
+        when(accountCategoryBalanceRepository.findByAccountCodeAndCategoryCodeIn(anyLong(), anyList())).thenReturn(testHelper.createAccountCategoryBalances());
+        when(accountCategoryBalanceRepository.findByAccountCodeAndCategoryCode(anyLong(), anyInt())).thenReturn(new AccountCategoryBalance());
+        when(transitionRepository.save(any())).thenReturn(testHelper.createTransaction());
+        Transaction transaction = testHelper.createTransaction();
+        transaction.setTotalAmount(new java.math.BigDecimal(1000));
+        transitionUseCase.execute(transaction);
+        assertEquals(ResponseCode.REJEITADA, transaction.getResponseCode());
+    }
+    @Test
+    public void testExecuteWithoutAccount() {
+        Transaction transactionWithoutAccount = testHelper.createTransactionWhithoutAcount();
+        transactionWithoutAccount.setAccount(null);
+        transitionUseCase.execute(transactionWithoutAccount);
+        assertEquals(ResponseCode.ERROINESPERADO, transactionWithoutAccount.getResponseCode());
+    }
+
+
+
 }
