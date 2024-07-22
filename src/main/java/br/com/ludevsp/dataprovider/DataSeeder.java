@@ -63,6 +63,15 @@ public class DataSeeder {
             merchant.setCategory(category);
 
             merchantRepository.save(merchant);
+
+
+        }
+        if (merchantRepository.findByName("MERCADO DA MARIA               SAO PAULO BR") == null) {
+            Merchant merchantMaria = new Merchant();
+            merchantMaria.setName("MERCADO DA MARIA               SAO PAULO BR");
+
+
+            merchantRepository.save(merchantMaria);
         }
     }
     public void seedMockAccount() {

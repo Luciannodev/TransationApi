@@ -1,6 +1,6 @@
 package helpers;
 
-import br.com.ludevsp.domain.dto.ResponseCode;
+import br.com.ludevsp.domain.enums.ResponseCode;
 import br.com.ludevsp.domain.entities.*;
 
 import java.math.BigDecimal;
@@ -15,6 +15,15 @@ public class TestHelper {
         transaction.setMmc(5411);
         transaction.setTotalAmount(new BigDecimal(100));
         transaction.setAccountCode(123);
+        transaction.setMerchant(new Merchant("Teste"));
+        return transaction;
+    }
+
+    public Transaction createTransactionWhithoutAcount() {
+        Transaction transaction = new Transaction();
+        transaction.setResponseCode(ResponseCode.APROVADA);
+        transaction.setMmc(5411);
+        transaction.setTotalAmount(new BigDecimal(100));
         transaction.setMerchant(new Merchant("Teste"));
         return transaction;
     }

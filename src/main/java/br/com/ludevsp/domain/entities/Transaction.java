@@ -37,14 +37,14 @@ public class Transaction {
     private long accountCode;
 
     @ManyToOne
-    @JoinColumn(name = "account_code", nullable = false)
+    @JoinColumn(name = "account_code")
     private Account account;
 
     @Column(name = "mmc", insertable = false, updatable = false)
     private int mmc;
 
     @ManyToOne
-    @JoinColumn(name = "mmc", nullable = false)
+    @JoinColumn(name = "mmc")
     private Category Category;
 
     public Transaction(String accountCode, BigDecimal totalAmount, String mmc, String merchantName) {
