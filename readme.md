@@ -43,73 +43,74 @@ To consume the API you've created, you can follow these steps:
 1. **Environment Setup and Installation**
    Ensure you have Java and Gradle installed on your system. You'll also need an HTTP client, such as Postman or cURL, to make requests to the API.
 
-   2. **Starting the Application**
-      Navigate to the root directory of the project and run the command `./gradlew bootRun`. This will start the Spring Boot application on port 8080.
+    2. **Starting the Application**
+       Navigate to the root directory of the project and run the command `./gradlew bootRun`. This will start the Spring Boot application on port 8080.
 
-      3. **Consuming the API**
-         Now you can make HTTP requests to the API. Here are some examples of how you can do this:
+        3. **Consuming the API**
+           Now you can make HTTP requests to the API. Here are some examples of how you can do this:
 
-          - **Creating a Transaction**
-            To create a transaction, you can make a POST request to the `/transactions` endpoint. Here's an example request body:
-     
-            - **Request example** 
-              ```json
-                    {
-                    "account": "1",
-                    "totalAmount": 100,
-                    "mcc": "5811",
-                    "merchant": "PADARIA DO ZE               SAO PAULO BR"
-                    }
-              ```
-                You can make this request using Postman or cURL. Here's an example cURL command:
-                ```bash
-                  curl -X POST http://localhost:8080/transactions -H "Content-Type: application/json" -d '{"account": "1", "totalAmount": 100, "mcc": "5811", "merchant": "PADARIA DO ZE               SAO PAULO BR"}'
-                ```
-            - **Response example**
-              ```json
-                   {
-                    "data": {
-                      "Message": "Transação aprovada",
-                        "code": "00"
+            - **Creating a Transaction**
+              To create a transaction, you can make a POST request to the `/transactions` endpoint. Here's an example request body:
+
+                - **Request example**
+                  ```json
+                        {
+                        "account": "1",
+                        "totalAmount": 100,
+                        "mcc": "5811",
+                        "merchant": "PADARIA DO ZE               SAO PAULO BR"
                         }
-                    }
-              ```
-                
-         - **Retrieving a Transaction**
-             To retrieve a transaction, you can make a GET request to the `/transactions/t` endpoint, where `{id}` is the ID of the transaction you want to retrieve. Here's an example cURL command:
-             ```bash
-                   curl --request GET \
-                   --url 'http://localhost:8080/transactions' 
-             ```
-            - **Response example**
-              ```json
-                 {
-                 "data": [
+                  ```
+                  You can make this request using Postman or cURL. Here's an example cURL command:
+                    ```bash
+                      curl -X POST http://localhost:8080/transactions -H "Content-Type: application/json" -d '{"account": "1", "totalAmount": 100, "mcc": "5811", "merchant": "PADARIA DO ZE               SAO PAULO BR"}'
+                    ```
+                - **Response example**
+                  ```json
+                       {
+                        "data": {
+                          "Message": "Transação aprovada",
+                            "code": "00"
+                            }
+                        }
+                  ```
+
+            - **Retrieving a Transaction**
+              To retrieve a transaction, you can make a GET request to the `/transactions/t` endpoint, where `{id}` is the ID of the transaction you want to retrieve. Here's an example cURL command:
+                ```bash
+                      curl --request GET \
+                      --url 'http://localhost:8080/transactions' 
+                ```
+                - **Response example**
+                  ```json
                      {
-                         "transactionCode": 1,
-                         "create_time": "2024-07-23",
-                         "merchantCode": 1,
-                         "totalAmount": 100.00,
-                         "accountCode": 1,
-                         "mmc": 5411,
-                         "Message": "Transação aprovada",
-                         "code": "00"
-                     },
-                     {
-                         "transactionCode": 2,
-                         "create_time": "2024-07-23",
-                         "merchantCode": 1,
-                         "totalAmount": 100.00,
-                         "accountCode": 1,
-                         "mmc": 5411,
-                         "Message": "Transação aprovada",
-                         "code": "00"
+                     "data": [
+                         {
+                             "transactionCode": 1,
+                             "create_time": "2024-07-23",
+                             "merchantCode": 1,
+                             "totalAmount": 100.00,
+                             "accountCode": 1,
+                             "mmc": 5411,
+                             "Message": "Transação aprovada",
+                             "code": "00"
+                         },
+                         {
+                             "transactionCode": 2,
+                             "create_time": "2024-07-23",
+                             "merchantCode": 1,
+                             "totalAmount": 100.00,
+                             "accountCode": 1,
+                             "mmc": 5411,
+                             "Message": "Transação aprovada",
+                             "code": "00"
+                         }
+                     ]
                      }
-                 ]
-                 }
-              ```
-           
-      
+                  ```
+### h2 Database
+1.**Accessing the H2 Console**
+You can access the H2 console by navigating to `http://localhost:8080/h2-console` in your browser. You'll need to provide the JDBC URL, username, and password to connect to the database. The JDBC URL is `jdbc:h2:mem:testdb`, and the username is `sa` and password is `password`.
 
 ### Running Tests
 
