@@ -9,6 +9,7 @@ This API is designed to handle credit card transactions. It provides endpoints f
 - Java 21
 - Spring Boot
 - Spring Data JPA
+- H2 Database
 
 ### Database Schema
 
@@ -25,7 +26,7 @@ The database consists of the following tables:
 The API provides the following endpoints:
 
 - `POST /transactions`: Creates a new transaction. DONE
-- `GET /transactions/{id}`: Retrieves a transaction.DONE
+- `GET /transactions`: Retrieves a transaction.DONE
 
 ### Business Rules
 
@@ -42,71 +43,72 @@ To consume the API you've created, you can follow these steps:
 1. **Environment Setup and Installation**
    Ensure you have Java and Gradle installed on your system. You'll also need an HTTP client, such as Postman or cURL, to make requests to the API.
 
-2. **Starting the Application**
-   Navigate to the root directory of the project and run the command `./gradlew bootRun`. This will start the Spring Boot application on port 8080.
+   2. **Starting the Application**
+      Navigate to the root directory of the project and run the command `./gradlew bootRun`. This will start the Spring Boot application on port 8080.
 
-3. **Consuming the API**
-   Now you can make HTTP requests to the API. Here are some examples of how you can do this:
+      3. **Consuming the API**
+         Now you can make HTTP requests to the API. Here are some examples of how you can do this:
 
-    - **Creating a Transaction**
-      To create a transaction, you can make a POST request to the `/transactions` endpoint. Here's an example request body:
+          - **Creating a Transaction**
+            To create a transaction, you can make a POST request to the `/transactions` endpoint. Here's an example request body:
      
-    - **Request example** 
-    - ```json
-          {
-          "account": "1",
-          "totalAmount": 100,
-          "mcc": "5811",
-          "merchant": "PADARIA DO ZE               SAO PAULO BR"
-          }
-      ```
-      You can make this request using Postman or cURL. Here's an example cURL command:
-      ```bash
-        curl -X POST http://localhost:8080/transactions -H "Content-Type: application/json" -d '{"account": "1", "totalAmount": 100, "mcc": "5811", "merchant": "PADARIA DO ZE               SAO PAULO BR"}'
-      ```
-    - **Response example**
-    - ```json
-           {
-              "code": "00", 
-              "message": "Transaction approved."
-           }
-      ```
-    - **Retrieving a Transaction**
-        To retrieve a transaction, you can make a GET request to the `/transactions/t` endpoint, where `{id}` is the ID of the transaction you want to retrieve. Here's an example cURL command:
-        ```bash
-            curl --request GET \
-            --url 'http://localhost:8080/transactions' 
-        ```
-    - **Response example**
-    - ```json
-          [
-           {
-           "transactionCode": 1,
-           "code": "00",
-           "merchantCode": 2,
-           "totalAmount": 100.0,
-           "accountCode": 1,
-           "mmc": 5411
-           },
-           {
-           "transactionCode": 2,
-           "code": "00",
-           "merchantCode": 1,
-           "totalAmount": 100.0,
-           "accountCode": 1,
-           "mmc": 5411
-           },
-           {
-           "transactionCode": 3,
-           "code": "00",
-           "merchantCode": 2,
-           "totalAmount": 100.0,
-           "accountCode": 1,
-           "mmc": 5811
-           }
-           ]
-      ```
-    - 
+            - **Request example** 
+              - ```json
+                    {
+                    "account": "1",
+                    "totalAmount": 100,
+                    "mcc": "5811",
+                    "merchant": "PADARIA DO ZE               SAO PAULO BR"
+                    }
+                ```
+                You can make this request using Postman or cURL. Here's an example cURL command:
+                ```bash
+                  curl -X POST http://localhost:8080/transactions -H "Content-Type: application/json" -d '{"account": "1", "totalAmount": 100, "mcc": "5811", "merchant": "PADARIA DO ZE               SAO PAULO BR"}'
+                ```
+                - **Response example**
+                  ```json
+                       {
+                        "data": {
+                          "Message": "Transação aprovada",
+                            "code": "00"
+                            }
+                        }
+                  ```
+                
+          - **Retrieving a Transaction**
+              To retrieve a transaction, you can make a GET request to the `/transactions/t` endpoint, where `{id}` is the ID of the transaction you want to retrieve. Here's an example cURL command:
+              ```bash
+                  curl --request GET \
+                  --url 'http://localhost:8080/transactions' 
+              ```
+          - **Response example**
+          - ```json
+                {
+                "data": [
+                    {
+                        "transactionCode": 1,
+                        "create_time": "2024-07-23",
+                        "merchantCode": 1,
+                        "totalAmount": 100.00,
+                        "accountCode": 1,
+                        "mmc": 5411,
+                        "Message": "Transação aprovada",
+                        "code": "00"
+                    },
+                    {
+                        "transactionCode": 2,
+                        "create_time": "2024-07-23",
+                        "merchantCode": 1,
+                        "totalAmount": 100.00,
+                        "accountCode": 1,
+                        "mmc": 5411,
+                        "Message": "Transação aprovada",
+                        "code": "00"
+                    }
+                ]
+                }
+            ```
+          - 
       
 
 ### Running Tests
