@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Data
@@ -19,7 +20,7 @@ public class TransactionResponse {
     private String responseCode;
 
     @JsonProperty("create_time")
-    private Timestamp createTime;
+    private Date createTime;
 
     @JsonProperty("merchantCode")
     private long merchantCode;

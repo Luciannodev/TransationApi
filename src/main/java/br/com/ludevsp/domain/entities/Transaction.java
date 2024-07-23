@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Data
@@ -24,7 +25,7 @@ public class Transaction {
     private String responseCode;
 
     @Column(name = "create_time")
-    private Timestamp createTime;
+    private Date createTime = new Date(System.currentTimeMillis());
 
     @Column(name = "merchant_code", insertable = false, updatable = false)
     private long merchantCode;

@@ -1,18 +1,16 @@
 package br.com.ludevsp.application.usecase;
 
 import br.com.ludevsp.api.dto.TransactionQuery;
-import br.com.ludevsp.api.dto.TransactionResponse;
 import br.com.ludevsp.application.helpers.TransactionSpecification;
-import br.com.ludevsp.domain.enums.ResponseCode;
 import br.com.ludevsp.domain.entities.AccountCategoryBalance;
 import br.com.ludevsp.domain.entities.Category;
 import br.com.ludevsp.domain.entities.Transaction;
+import br.com.ludevsp.domain.enums.ResponseCode;
 import br.com.ludevsp.domain.intefaces.repository.AccountCategoryBalanceRepository;
 import br.com.ludevsp.domain.intefaces.repository.CategoryRepository;
 import br.com.ludevsp.domain.intefaces.repository.MerchantRepository;
 import br.com.ludevsp.domain.intefaces.repository.TransactionRepository;
 import br.com.ludevsp.domain.intefaces.usecase.TransactionUseCase;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +21,10 @@ import static br.com.ludevsp.domain.enums.CategoryEnum.getCategoryByMcc;
 
 @Service
 public class TransactionUseCaseImpl implements TransactionUseCase {
-    private TransactionRepository transactionRepository;
-    private AccountCategoryBalanceRepository accountCategoryBalanceRepository;
-    private MerchantRepository merchantRepository;
-    private CategoryRepository categoryRepository;
+    private final TransactionRepository transactionRepository;
+    private final AccountCategoryBalanceRepository accountCategoryBalanceRepository;
+    private final MerchantRepository merchantRepository;
+    private final CategoryRepository categoryRepository;
 
     public TransactionUseCaseImpl(TransactionRepository transactionRepository, AccountCategoryBalanceRepository accountCategoryBalanceRepository, MerchantRepository merchantRepository, CategoryRepository categoryRepository) {
         this.transactionRepository = transactionRepository;
@@ -76,8 +74,8 @@ public class TransactionUseCaseImpl implements TransactionUseCase {
     }
 
     private void attachMerchantDetails(Transaction transaction) {
-
-        var merchant = merchantRepository.findByName(transaction.getMerchant().getName());
+        var merchantName = transaction.getMerchant().getName().split("               ")[0].toUpperCase();
+        var merchant = merchantRepository.findByName(merchantName);
         if (merchant == null) {
             transaction.setMerchant(merchant);
             throw  new RuntimeException("Merchant not found");

@@ -17,6 +17,7 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("com.h2database:h2")
     testImplementation("io.rest-assured:spring-mock-mvc:3.0.0")
     testImplementation ("org.junit.jupiter:junit-jupiter-api:5.8.1")
@@ -26,6 +27,8 @@ dependencies {
     compileOnly ("org.projectlombok:lombok:1.18.34")
     annotationProcessor ("org.projectlombok:lombok:1.18.34")
     testAnnotationProcessor ("org.projectlombok:lombok:1.18.34")
+    testImplementation ("org.skyscreamer:jsonassert:1.5.0")
+
 
 }
 

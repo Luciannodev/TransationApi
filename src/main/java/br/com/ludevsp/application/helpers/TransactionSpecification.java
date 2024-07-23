@@ -16,7 +16,7 @@ import java.util.List;
 
 public class TransactionSpecification implements Specification<Transaction> {
 
-    private TransactionQuery transactionQuery;
+    private final TransactionQuery transactionQuery;
 
     public TransactionSpecification(TransactionQuery transactionQuery) {
         this.transactionQuery = transactionQuery;
