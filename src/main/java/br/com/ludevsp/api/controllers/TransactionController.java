@@ -30,7 +30,7 @@ public class TransactionController {
         }
 
         var transaction = transactionUseCase.execute(request.ToEntity());
-        return new ResponseEntity<>(new ApiResponse<>(new TransactionResponse(transaction)), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ApiResponse<>(new TransactionResponse(transaction.getResponseCode(),transaction.getResponseMessage())), HttpStatus.CREATED);
     }
 
     @RequestMapping(method = RequestMethod.GET)
