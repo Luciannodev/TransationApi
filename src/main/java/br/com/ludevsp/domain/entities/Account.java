@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Data
@@ -17,5 +18,5 @@ public class Account {
     private long accountId;
 
     @Column(name = "create_time")
-    private Timestamp createTime;
+    private Date createTime = new Date(System.currentTimeMillis());
 }

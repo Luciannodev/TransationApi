@@ -3,6 +3,8 @@ package br.com.ludevsp.domain.entities;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
+
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Data
@@ -19,7 +21,7 @@ public class Merchant {
     private String name;
 
     @Column(name = "create_time")
-    private Timestamp createTime;
+    private Date createTime = new Date(System.currentTimeMillis());
 
     @Column(name = "mmc", insertable = false, updatable = false)
     private Integer mmc;

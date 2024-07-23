@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Data
@@ -20,17 +21,14 @@ public class Transaction {
     @Column(name = "total_amount")
     private BigDecimal totalAmount;
 
-    @Column(name = "response_code")
-    private String responseCode;
-
     @Column(name = "create_time")
-    private Timestamp createTime;
+    private Date createTime = new Date(System.currentTimeMillis());
 
     @Column(name = "merchant_code", insertable = false, updatable = false)
     private long merchantCode;
 
     @ManyToOne
-    @JoinColumn(name = "merchant_code", nullable = false)
+    @JoinColumn(name = "merchant_code")
     private Merchant merchant;
 
     @Column(name = "account_code", insertable = false, updatable = false)
@@ -46,6 +44,12 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "mmc")
     private Category Category;
+
+    @JoinColumn(name = "response_message")
+    private String responseMessage;
+
+    @Column(name = "response_code")
+    private String responseCode;
 
     public Transaction(String accountCode, BigDecimal totalAmount, String mmc, String merchantName) {
         this.accountCode = Long.parseLong(accountCode);

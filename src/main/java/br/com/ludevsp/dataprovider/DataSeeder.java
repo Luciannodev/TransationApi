@@ -46,9 +46,9 @@ public class DataSeeder {
     }
 
     public void seedMerchantDataMock() {
-        if (merchantRepository.findByName("PADARIA DO ZE               SAO PAULO BR") == null) {
+        if (merchantRepository.findByName("PADARIA DO ZE") == null) {
             Merchant merchant = new Merchant();
-            merchant.setName("PADARIA DO ZE               SAO PAULO BR");
+            merchant.setName("PADARIA DO ZE");
             merchant.setMmc(5411);
 
             // Busca a categoria no banco de dados
@@ -66,9 +66,9 @@ public class DataSeeder {
 
 
         }
-        if (merchantRepository.findByName("MERCADO DA MARIA               SAO PAULO BR") == null) {
+        if (merchantRepository.findByName("MERCADO DA MARIA") == null) {
             Merchant merchantMaria = new Merchant();
-            merchantMaria.setName("MERCADO DA MARIA               SAO PAULO BR");
+            merchantMaria.setName("MERCADO DA MARIA");
 
 
             merchantRepository.save(merchantMaria);

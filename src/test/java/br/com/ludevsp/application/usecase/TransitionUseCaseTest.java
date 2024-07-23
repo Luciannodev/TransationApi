@@ -1,5 +1,6 @@
 package br.com.ludevsp.application.usecase;
 
+import br.com.ludevsp.api.dto.TransactionQuery;
 import br.com.ludevsp.domain.enums.ResponseCode;
 import br.com.ludevsp.domain.entities.AccountCategoryBalance;
 import br.com.ludevsp.domain.entities.Category;
@@ -15,6 +16,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.jpa.domain.Specification;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -23,10 +28,10 @@ import static org.mockito.Mockito.when;
 public class TransitionUseCaseTest {
 
     @InjectMocks
-    private TransactionUseCaseImpl transitionUseCase;
+    private TransactionUseCaseImpl transactionUseCase;
 
     @Mock
-    private TransactionRepository transitionRepository;
+    private TransactionRepository transactionRepository;
 
     @Mock
     private AccountCategoryBalanceRepository accountCategoryBalanceRepository;
@@ -55,8 +60,8 @@ public class TransitionUseCaseTest {
     public void testExecute() {
         when(accountCategoryBalanceRepository.findByAccountCodeAndCategoryCodeIn(anyLong(), anyList())).thenReturn(testHelper.createAccountCategoryBalances());
         when(accountCategoryBalanceRepository.findByAccountCodeAndCategoryCode(anyLong(), anyInt())).thenReturn(new AccountCategoryBalance());
-        when(transitionRepository.save(any())).thenReturn(testHelper.createTransaction());
-        Transaction result = transitionUseCase.execute(testHelper.createTransaction());
+        when(transactionRepository.save(any())).thenReturn(testHelper.createTransaction());
+        Transaction result = transactionUseCase.execute(testHelper.createTransaction());
         assertEquals(ResponseCode.APROVADA, result.getResponseCode());
     }
 
@@ -64,18 +69,32 @@ public class TransitionUseCaseTest {
     public void testExecuteWithoutBalance() {
         when(accountCategoryBalanceRepository.findByAccountCodeAndCategoryCodeIn(anyLong(), anyList())).thenReturn(testHelper.createAccountCategoryBalances());
         when(accountCategoryBalanceRepository.findByAccountCodeAndCategoryCode(anyLong(), anyInt())).thenReturn(new AccountCategoryBalance());
-        when(transitionRepository.save(any())).thenReturn(testHelper.createTransaction());
+        when(transactionRepository.save(any())).thenReturn(testHelper.createTransaction());
         Transaction transaction = testHelper.createTransaction();
         transaction.setTotalAmount(new java.math.BigDecimal(1000));
-        transitionUseCase.execute(transaction);
+        transactionUseCase.execute(transaction);
         assertEquals(ResponseCode.REJEITADA, transaction.getResponseCode());
     }
     @Test
     public void testExecuteWithoutAccount() {
         Transaction transactionWithoutAccount = testHelper.createTransactionWhithoutAcount();
         transactionWithoutAccount.setAccount(null);
-        transitionUseCase.execute(transactionWithoutAccount);
+        transactionUseCase.execute(transactionWithoutAccount);
         assertEquals(ResponseCode.ERROINESPERADO, transactionWithoutAccount.getResponseCode());
+    }
+
+    @Test
+    public void testGetAllTransactions() {
+        TransactionQuery transactionQuery = new TransactionQuery();
+        Transaction transaction1 = new Transaction();
+        Transaction transaction2 = new Transaction();
+        List<Transaction> expectedTransactions = Arrays.asList(transaction1, transaction2);
+
+        when(transactionRepository.findAll(any(Specification.class))).thenReturn(expectedTransactions);
+
+        List<Transaction> actualTransactions = transactionUseCase.getAllTransactions(transactionQuery);
+
+        assertEquals(expectedTransactions, actualTransactions);
     }
 
 

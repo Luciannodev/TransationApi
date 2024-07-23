@@ -1,14 +1,17 @@
 package br.com.ludevsp.application.usecase;
 
-import br.com.ludevsp.domain.enums.ResponseCode;
+import br.com.ludevsp.api.dto.TransactionQuery;
+import br.com.ludevsp.application.helpers.TransactionSpecification;
 import br.com.ludevsp.domain.entities.AccountCategoryBalance;
 import br.com.ludevsp.domain.entities.Category;
 import br.com.ludevsp.domain.entities.Transaction;
+import br.com.ludevsp.domain.enums.ResponseCode;
 import br.com.ludevsp.domain.intefaces.repository.AccountCategoryBalanceRepository;
 import br.com.ludevsp.domain.intefaces.repository.CategoryRepository;
 import br.com.ludevsp.domain.intefaces.repository.MerchantRepository;
 import br.com.ludevsp.domain.intefaces.repository.TransactionRepository;
 import br.com.ludevsp.domain.intefaces.usecase.TransactionUseCase;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,16 +21,23 @@ import static br.com.ludevsp.domain.enums.CategoryEnum.getCategoryByMcc;
 
 @Service
 public class TransactionUseCaseImpl implements TransactionUseCase {
-    private TransactionRepository transactionRepository;
-    private AccountCategoryBalanceRepository accountCategoryBalanceRepository;
-    private MerchantRepository merchantRepository;
-    private CategoryRepository categoryRepository;
+    private final TransactionRepository transactionRepository;
+    private final AccountCategoryBalanceRepository accountCategoryBalanceRepository;
+    private final MerchantRepository merchantRepository;
+    private final CategoryRepository categoryRepository;
 
     public TransactionUseCaseImpl(TransactionRepository transactionRepository, AccountCategoryBalanceRepository accountCategoryBalanceRepository, MerchantRepository merchantRepository, CategoryRepository categoryRepository) {
         this.transactionRepository = transactionRepository;
         this.accountCategoryBalanceRepository = accountCategoryBalanceRepository;
         this.merchantRepository = merchantRepository;
         this.categoryRepository = categoryRepository;
+    }
+
+    @Override
+    public List<Transaction> getAllTransactions(TransactionQuery transactionQuery) {
+        Specification<Transaction> spec = new TransactionSpecification(transactionQuery);
+        List<Transaction> transactions = transactionRepository.findAll(spec);
+        return transactions;
     }
 
     @Override
@@ -44,10 +54,12 @@ public class TransactionUseCaseImpl implements TransactionUseCase {
             transaction.setAccount(principalAccount.getAccount());
 
             if (!processTransaction(principalAccount, transaction) && !processTransaction(fallbackAccount, transaction)) {
+                transaction.setResponseMessage("Saldo insuficiente");
                 saveTransaction(transaction, ResponseCode.REJEITADA);
             }
             return transaction;
         } catch (Exception e) {
+            transaction.setResponseMessage("Erro inesperado");
             saveTransaction(transaction, ResponseCode.ERROINESPERADO);
             transaction.setResponseCode(ResponseCode.ERROINESPERADO);
             return transaction;
@@ -57,6 +69,7 @@ public class TransactionUseCaseImpl implements TransactionUseCase {
     private boolean processTransaction(AccountCategoryBalance account, Transaction transaction) {
         if (hasBalance(account, transaction)) {
             deductBalance(transaction, account);
+            transaction.setResponseMessage("Transação aprovada");
             saveTransaction(transaction, ResponseCode.APROVADA);
             return true;
         }
@@ -64,12 +77,13 @@ public class TransactionUseCaseImpl implements TransactionUseCase {
     }
 
     private void attachMerchantDetails(Transaction transaction) {
-        var merchant = merchantRepository.findByName(transaction.getMerchant().getName());
-        if (merchant.getMmc() == null) {
+        var merchantName = transaction.getMerchant().getName().split("\\s{8,}|\\u00A0+")[0].toUpperCase();
+        var merchant = merchantRepository.findByName(merchantName.trim());
+        if (merchant == null) {
             transaction.setMerchant(merchant);
-            throw new RuntimeException("Merchant Mmmc not found");
+            throw  new RuntimeException("Merchant not found");
         }
-        if (merchant.getMmc() != 0) {
+        else if (merchant.getMmc() != null) {
             transaction.setMmc(merchant.getMmc());
         }
         transaction.setMerchant(merchant);
