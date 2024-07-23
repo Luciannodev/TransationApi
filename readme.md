@@ -53,62 +53,62 @@ To consume the API you've created, you can follow these steps:
             To create a transaction, you can make a POST request to the `/transactions` endpoint. Here's an example request body:
      
             - **Request example** 
-              - ```json
+              ```json
                     {
                     "account": "1",
                     "totalAmount": 100,
                     "mcc": "5811",
                     "merchant": "PADARIA DO ZE               SAO PAULO BR"
                     }
-                ```
+              ```
                 You can make this request using Postman or cURL. Here's an example cURL command:
                 ```bash
                   curl -X POST http://localhost:8080/transactions -H "Content-Type: application/json" -d '{"account": "1", "totalAmount": 100, "mcc": "5811", "merchant": "PADARIA DO ZE               SAO PAULO BR"}'
                 ```
-                - **Response example**
-                  ```json
-                       {
-                        "data": {
-                          "Message": "Transação aprovada",
-                            "code": "00"
-                            }
+            - **Response example**
+              ```json
+                   {
+                    "data": {
+                      "Message": "Transação aprovada",
+                        "code": "00"
                         }
-                  ```
-                
-          - **Retrieving a Transaction**
-              To retrieve a transaction, you can make a GET request to the `/transactions/t` endpoint, where `{id}` is the ID of the transaction you want to retrieve. Here's an example cURL command:
-              ```bash
-                  curl --request GET \
-                  --url 'http://localhost:8080/transactions' 
-              ```
-          - **Response example**
-          - ```json
-                {
-                "data": [
-                    {
-                        "transactionCode": 1,
-                        "create_time": "2024-07-23",
-                        "merchantCode": 1,
-                        "totalAmount": 100.00,
-                        "accountCode": 1,
-                        "mmc": 5411,
-                        "Message": "Transação aprovada",
-                        "code": "00"
-                    },
-                    {
-                        "transactionCode": 2,
-                        "create_time": "2024-07-23",
-                        "merchantCode": 1,
-                        "totalAmount": 100.00,
-                        "accountCode": 1,
-                        "mmc": 5411,
-                        "Message": "Transação aprovada",
-                        "code": "00"
                     }
-                ]
-                }
-            ```
-          - 
+              ```
+                
+         - **Retrieving a Transaction**
+             To retrieve a transaction, you can make a GET request to the `/transactions/t` endpoint, where `{id}` is the ID of the transaction you want to retrieve. Here's an example cURL command:
+             ```bash
+                   curl --request GET \
+                   --url 'http://localhost:8080/transactions' 
+             ```
+            - **Response example**
+              ```json
+                 {
+                 "data": [
+                     {
+                         "transactionCode": 1,
+                         "create_time": "2024-07-23",
+                         "merchantCode": 1,
+                         "totalAmount": 100.00,
+                         "accountCode": 1,
+                         "mmc": 5411,
+                         "Message": "Transação aprovada",
+                         "code": "00"
+                     },
+                     {
+                         "transactionCode": 2,
+                         "create_time": "2024-07-23",
+                         "merchantCode": 1,
+                         "totalAmount": 100.00,
+                         "accountCode": 1,
+                         "mmc": 5411,
+                         "Message": "Transação aprovada",
+                         "code": "00"
+                     }
+                 ]
+                 }
+              ```
+           
       
 
 ### Running Tests
