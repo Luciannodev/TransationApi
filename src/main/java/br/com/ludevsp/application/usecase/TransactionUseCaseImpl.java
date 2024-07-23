@@ -77,8 +77,8 @@ public class TransactionUseCaseImpl implements TransactionUseCase {
     }
 
     private void attachMerchantDetails(Transaction transaction) {
-        var merchantName = transaction.getMerchant().getName().split("               ")[0].toUpperCase();
-        var merchant = merchantRepository.findByName(merchantName);
+        var merchantName = transaction.getMerchant().getName().split("\\s{8,}|\\u00A0+")[0].toUpperCase();
+        var merchant = merchantRepository.findByName(merchantName.trim());
         if (merchant == null) {
             transaction.setMerchant(merchant);
             throw  new RuntimeException("Merchant not found");
