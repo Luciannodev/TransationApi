@@ -21,9 +21,6 @@ public class Transaction {
     @Column(name = "total_amount")
     private BigDecimal totalAmount;
 
-    @Column(name = "response_code")
-    private String responseCode;
-
     @Column(name = "create_time")
     private Date createTime = new Date(System.currentTimeMillis());
 
@@ -47,6 +44,12 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "mmc")
     private Category Category;
+
+    @JoinColumn(name = "response_message")
+    private String responseMessage;
+
+    @Column(name = "response_code")
+    private String responseCode;
 
     public Transaction(String accountCode, BigDecimal totalAmount, String mmc, String merchantName) {
         this.accountCode = Long.parseLong(accountCode);

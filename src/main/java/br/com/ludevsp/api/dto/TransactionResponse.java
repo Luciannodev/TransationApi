@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -16,9 +17,6 @@ public class TransactionResponse {
     @JsonProperty("transactionCode")
     private long transactionCode;
 
-    @JsonProperty("code")
-    private String responseCode;
-
     @JsonProperty("create_time")
     private Date createTime;
 
@@ -26,7 +24,7 @@ public class TransactionResponse {
     private long merchantCode;
 
     @JsonProperty("totalAmount")
-    private double totalAmount;
+    private BigDecimal totalAmount;
 
     @JsonProperty("accountCode")
     private long accountCode;
@@ -34,18 +32,25 @@ public class TransactionResponse {
     @JsonProperty("mmc")
     private int mmc;
 
-    public TransactionResponse(String responseCode) {
-        this.responseCode = responseCode;
-    }
+    @JsonProperty("Message")
+    private String responseMessage;
 
+    @JsonProperty("code")
+    private String responseCode;
+
+    public TransactionResponse(String responseCode, String responseMessage) {
+        this.responseCode = responseCode;
+        this.responseMessage = responseMessage;
+    }
 
     public TransactionResponse(Transaction transaction) {
         this.transactionCode = transaction.getTransactionCode();
         this.responseCode = transaction.getResponseCode();
         this.createTime = transaction.getCreateTime();
         this.merchantCode = transaction.getMerchantCode();
-        this.totalAmount = transaction.getTotalAmount().doubleValue();
+        this.totalAmount = transaction.getTotalAmount();
         this.accountCode = transaction.getAccountCode();
         this.mmc = transaction.getMmc();
+        this.responseMessage = transaction.getResponseMessage();
     }
 }

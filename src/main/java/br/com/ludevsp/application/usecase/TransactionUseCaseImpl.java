@@ -54,10 +54,12 @@ public class TransactionUseCaseImpl implements TransactionUseCase {
             transaction.setAccount(principalAccount.getAccount());
 
             if (!processTransaction(principalAccount, transaction) && !processTransaction(fallbackAccount, transaction)) {
+                transaction.setResponseMessage("Saldo insuficiente");
                 saveTransaction(transaction, ResponseCode.REJEITADA);
             }
             return transaction;
         } catch (Exception e) {
+            transaction.setResponseMessage("Erro inesperado");
             saveTransaction(transaction, ResponseCode.ERROINESPERADO);
             transaction.setResponseCode(ResponseCode.ERROINESPERADO);
             return transaction;
@@ -67,6 +69,7 @@ public class TransactionUseCaseImpl implements TransactionUseCase {
     private boolean processTransaction(AccountCategoryBalance account, Transaction transaction) {
         if (hasBalance(account, transaction)) {
             deductBalance(transaction, account);
+            transaction.setResponseMessage("Transação aprovada");
             saveTransaction(transaction, ResponseCode.APROVADA);
             return true;
         }

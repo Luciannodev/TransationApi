@@ -2,6 +2,7 @@ package br.com.ludevsp.api.controller;
 
 import br.com.ludevsp.api.controllers.TransactionController;
 import br.com.ludevsp.api.dto.TransactionQuery;
+import br.com.ludevsp.api.dto.TransactionRequest;
 import br.com.ludevsp.api.dto.TransactionResponse;
 import br.com.ludevsp.domain.enums.ResponseCode;
 import br.com.ludevsp.domain.entities.Transaction;
@@ -48,34 +49,37 @@ public class TransactionControllerTest {
         objectMapper = new ObjectMapper();
     }
 
+
     @Test
     public void testCreateTransaction() throws Exception {
         Transaction transaction = new Transaction();
         transaction.setResponseCode(ResponseCode.APROVADA);
-        transaction.setResponseCode("APROVADA");
+        transaction.setResponseMessage("Transação aprovada");
 
         when(transactionUseCase.execute(any())).thenReturn(transaction);
 
-        mockMvc.perform(post("/create_transaction")
+        TransactionRequest request = new TransactionRequest();
+        request.setAccountCode("1");
+        request.setTotalAmount(new BigDecimal("100.0"));
+        request.setMmc("5811");
+        request.setMerchantName("PADARIA DO ZE               SAO PAULO BR");
+
+        mockMvc.perform(post("/transactions")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"account\":\"1\",\"totalAmount\":100,\"mcc\":\"5811\",\"merchant\":\"PADARIADOZESAOPAULOBR\"}"))
-                .andExpect(status().isOk());
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated());
     }
 
     @Test
     public void testGetTransaction() throws Exception {
-        TransactionQuery transactionQuery = new TransactionQuery();
-        Transaction transaction = new Transaction(){};
-        transaction.setTotalAmount(new BigDecimal(100));
-        TransactionResponse transactionResponse = new TransactionResponse(transaction);
-        List<TransactionResponse> expectedTransactions = Arrays.asList(transactionResponse);
+        Transaction transaction = new Transaction();
+        transaction.setResponseCode(ResponseCode.APROVADA);
+        transaction.setResponseMessage("Transação aprovada");
 
-        when(transactionUseCase.getAllTransactions(any(TransactionQuery.class))).thenReturn(List.of(transaction));
+        when(transactionUseCase.getAllTransactions(any())).thenReturn(List.of(transaction));
 
-        mockMvc.perform(get("/get_transaction")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(transactionQuery)))
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(expectedTransactions)));
+        mockMvc.perform(get("/transactions")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }

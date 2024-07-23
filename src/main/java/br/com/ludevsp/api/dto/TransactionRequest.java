@@ -26,6 +26,6 @@ public class TransactionRequest {
     private String MerchantName;
 
     public Transaction ToEntity() {
-        return new Transaction(accountCode,new BigDecimal(String.valueOf(totalAmount)), mmc, MerchantName);
+        return new Transaction(accountCode,totalAmount, mmc, MerchantName);
     }
 }
